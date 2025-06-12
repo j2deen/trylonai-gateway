@@ -120,7 +120,7 @@ client = Anthropic(
 ### 3. Direct Validation (`POST /safeguard`)
 
 For custom workflows, use the `/safeguard` endpoint to validate content without proxying.
-```json
+```bash
 curl -s -X POST "http://localhost:8000/safeguard" \
   -H "Content-Type: application/json" \
   -d '{
@@ -130,7 +130,7 @@ curl -s -X POST "http://localhost:8000/safeguard" \
   }' | jq
 ```
 **Response:**
-```json
+```bash
 {
   "safety_code": 10,
   "message": "Potentially sensitive information detected.",
