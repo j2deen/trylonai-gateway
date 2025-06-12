@@ -42,7 +42,6 @@ COPY --from=builder /usr/local/lib/python3.10/site-packages /usr/local/lib/pytho
 COPY --from=builder /usr/local/bin /usr/local/bin
 COPY --from=builder /usr/local/lib/python3.10/site-packages/en_core_web_sm /usr/local/lib/python3.10/site-packages/en_core_web_sm
 COPY --chown=trylon:trylon src ./src
-COPY --chown=trylon:trylon scripts ./scripts
 COPY --chown=trylon:trylon policies.yaml ./policies.yaml
 
 RUN chown -R trylon:trylon /app
