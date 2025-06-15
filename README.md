@@ -1,6 +1,5 @@
 # Trylon Gateway: The Open Source Firewall for LLMs
 
-[![License: BSL 1.1](https://img.shields.io/badge/License-BSL%201.1-yellow.svg)](./LICENSE)
 [![Build Status](https://img.shields.io/github/actions/workflow/status/trylonai/gateway/ci.yml?branch=main)](https://github.com/trylonai/gateway/actions)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](./CONTRIBUTING.md)
 
