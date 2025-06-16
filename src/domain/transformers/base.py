@@ -1,6 +1,6 @@
 import asyncio
 import logging
-from typing import Generic, List, Optional, Tuple, TypeVar, Union
+from typing import Generic, List, Optional, Tuple, TypeVar, Union, TypeAlias
 
 import torch
 from torch import nn
@@ -14,8 +14,7 @@ logger = logging.getLogger(__name__)
 
 T = TypeVar("T", bound=PreTrainedModel)
 
-TokenizerOutput = BatchEncoding
-
+TokenizerOutput: TypeAlias = BatchEncoding
 
 class BaseTransformerModel(Generic[T]):
     """
