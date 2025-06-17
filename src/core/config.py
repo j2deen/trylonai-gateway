@@ -250,41 +250,37 @@ def load_config() -> AppConfig:
         chunk_overlap_chars=int(os.getenv("CHUNK_OVERLAP_CHARS", "200")),
     )
 
-    app_config_data = {
-        "host": os.getenv("HOST", AppConfig.model_fields["host"].default),
-        "port": int(os.getenv("PORT", AppConfig.model_fields["port"].default)),
-        "environment": Environment(
-            os.getenv("ENVIRONMENT", AppConfig.model_fields["environment"].default)
-        ),
-        "policies_file_path": os.getenv(
-            "POLICIES_FILE_PATH", AppConfig.model_fields["policies_file_path"].default
-        ),
+    app_config_kwargs: Dict[str, Any] = {
+        "host": os.getenv("HOST", "0.0.0.0"),
+        "port": int(os.getenv("PORT", "8000")),
+        "environment": Environment(os.getenv("ENVIRONMENT", "production")),
+        "policies_file_path": os.getenv("POLICIES_FILE_PATH", "policies.yaml"),
         "toxicity_model_url": os.getenv(
-            "TOXICITY_MODEL_URL", AppConfig.model_fields["toxicity_model_url"].default
+            "TOXICITY_MODEL_URL", "s-nlp/roberta_toxicity_classifier"
         ),
-        "ner_model_url": os.getenv(
-            "NER_MODEL_URL", AppConfig.model_fields["ner_model_url"].default
-        ),
+        "ner_model_url": os.getenv("NER_MODEL_URL", "dslim/bert-base-NER"),
         "middleware": middleware_config,
         "logging": log_config,
         "allowed_origins": allowed_origins,
         "validation": validation_config,
-        "openai_api_base_url": os.getenv("OPENAI_API_BASE_URL"),
-        "gemini_api_base_url": os.getenv("GEMINI_API_BASE_URL"),
         "gemini_api_version": gemini_version,
-        "claude_api_base_url": os.getenv("CLAUDE_API_BASE_URL"),
         "claude_api_version": claude_version,
     }
-    app_config_data = {
-        k: v
-        for k, v in app_config_data.items()
-        if v is not None
-        or k
-        not in ["openai_api_base_url", "gemini_api_base_url", "claude_api_base_url"]
-    }
+
+    openai_url = os.getenv("OPENAI_API_BASE_URL")
+    if openai_url is not None:
+        app_config_kwargs["openai_api_base_url"] = openai_url
+
+    gemini_url = os.getenv("GEMINI_API_BASE_URL")
+    if gemini_url is not None:
+        app_config_kwargs["gemini_api_base_url"] = gemini_url
+
+    claude_url = os.getenv("CLAUDE_API_BASE_URL")
+    if claude_url is not None:
+        app_config_kwargs["claude_api_base_url"] = claude_url
 
     try:
-        loaded_app_config = AppConfig(**app_config_data)
+        loaded_app_config = AppConfig(**app_config_kwargs)
         logger.info(
             f"Effective configuration loaded (Env: {loaded_app_config.environment}, "
             f"Chunking: {loaded_app_config.validation.enable_chunking}, "
