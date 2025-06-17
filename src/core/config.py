@@ -281,13 +281,6 @@ def load_config() -> AppConfig:
 
     try:
         loaded_app_config = AppConfig(**app_config_kwargs)
-        logger.info(
-            f"Effective configuration loaded (Env: {loaded_app_config.environment}, "
-            f"Chunking: {loaded_app_config.validation.enable_chunking}, "
-            f"OpenAI: {loaded_app_config.openai_api_base_url}, "
-            f"Gemini: {loaded_app_config.gemini_api_base_url}/{loaded_app_config.gemini_api_version}, "
-            f"Claude: {loaded_app_config.claude_api_base_url} / {loaded_app_config.claude_api_version})"
-        )
         logger.debug(f"Full Config: {loaded_app_config.model_dump(mode='json')}")
         return loaded_app_config
     except Exception as e:
