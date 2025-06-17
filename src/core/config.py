@@ -74,7 +74,7 @@ class ValidationConfig(BaseModel):
     def check_overlap(cls, v: int, info: ValidationInfo) -> int:
         max_chars = info.data.get("max_chunk_chars")
         if max_chars is not None and v >= max_chars:
-            new_overlap = max(0, max_chars // 4)
+            new_overlap: int = max(0, max_chars // 4)
             logger.warning(
                 f"Chunk overlap ({v}) >= max chars ({max_chars}). Adjusting to {new_overlap}"
             )
