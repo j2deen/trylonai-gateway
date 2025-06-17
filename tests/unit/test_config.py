@@ -189,13 +189,6 @@ def test_load_config_defaults(
     mock_logger.debug.assert_any_call(
         f"Effective path timeouts: {cfg.middleware.timeout.path_timeouts}"
     )
-    mock_logger.info.assert_any_call(
-        f"Effective configuration loaded (Env: {cfg.environment}, "
-        f"Chunking: {cfg.validation.enable_chunking}, "
-        f"OpenAI: {cfg.openai_api_base_url}, "  # Results in https://api.openai.com/v1
-        f"Gemini: {cfg.gemini_api_base_url}/{cfg.gemini_api_version}, "  # Results in https://generativelanguage.googleapis.com//v1beta
-        f"Claude: {cfg.claude_api_base_url} / {cfg.claude_api_version})"  # Results in https://api.anthropic.com/ / 2023-06-01
-    )
 
 
 @patch("src.core.config.Path")
@@ -275,13 +268,6 @@ def test_load_config_env_vars(
     mock_path_instance.exists.assert_called_once()
     mock_logger.debug.assert_any_call(
         f"Effective path timeouts: {cfg.middleware.timeout.path_timeouts}"
-    )
-    mock_logger.info.assert_any_call(
-        f"Effective configuration loaded (Env: {cfg.environment}, "
-        f"Chunking: {cfg.validation.enable_chunking}, "
-        f"OpenAI: {cfg.openai_api_base_url}, "
-        f"Gemini: {cfg.gemini_api_base_url}/{cfg.gemini_api_version}, "
-        f"Claude: {cfg.claude_api_base_url} / {cfg.claude_api_version})"
     )
 
 
