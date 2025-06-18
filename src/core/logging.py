@@ -5,51 +5,16 @@ import os
 import sys
 import uuid
 from logging.handlers import RotatingFileHandler, TimedRotatingFileHandler
-from typing import Any, Dict, List, Optional, Set, Type, Union
+from typing import Any, Dict, List, Optional, Type, Union
 
 from src.core.config import Environment
 from src.core.state import app_state
 
+from .constants import LOG_RECORD_STANDARD_ATTRS
+
 request_id_var: contextvars.ContextVar[Optional[str]] = contextvars.ContextVar(
     "request_id", default=None
 )
-
-LOG_RECORD_STANDARD_ATTRS: Set[str] = {
-    "args",
-    "asctime",
-    "created",
-    "exc_info",
-    "exc_text",
-    "filename",
-    "funcName",
-    "levelname",
-    "levelno",
-    "lineno",
-    "message",
-    "module",
-    "msecs",
-    "msg",
-    "name",
-    "pathname",
-    "process",
-    "processName",
-    "relativeCreated",
-    "stack_info",
-    "thread",
-    "threadName",
-    "service",
-    "environment",
-    "correlation_id",
-    "request_id",
-    "timestamp",
-    "level",
-    "logger",
-    "exception",
-    "exception_type",
-    "exception_traceback",
-    "exception_message",
-    "extra",
-}
 
 
 class ContextFilter(logging.Filter):
