@@ -21,6 +21,8 @@ class ContextFilter(logging.Filter):
     def __init__(self, service_name: str = "trylon-os-core"):
         super().__init__()
         self.service_name = service_name
+        if app_state.config is None:
+            raise RuntimeError("app_state.config is not initialized")
         self.environment = app_state.config.environment.value
 
     def filter(self, record: logging.LogRecord) -> bool:
@@ -43,6 +45,12 @@ class JsonFormatter(logging.Formatter):
 
     def format(self, record: logging.LogRecord) -> str:
         correlation_id = getattr(record, "correlation_id", "unassigned-correlation-id")
+        default_environment = (
+            "unknown"
+            if app_state.config is None
+            else app_state.config.environment.value
+        )
+
         log_object: Dict[str, Any] = {
             "timestamp": self.formatTime(
                 record, self.datefmt or self.DEFAULT_TIMESTAMP_FORMAT
@@ -51,9 +59,7 @@ class JsonFormatter(logging.Formatter):
             "logger": record.name,
             "message": record.getMessage(),
             "service": getattr(record, "service", "unknown-service"),
-            "environment": getattr(
-                record, "environment", app_state.config.environment.value
-            ),
+            "environment": getattr(record, "environment", default_environment),
             "correlation_id": correlation_id,
             "source_location": f"{record.pathname}:{record.lineno}",
         }
@@ -115,6 +121,11 @@ class ConsoleFormatter(logging.Formatter):
 
 
 def setup_logger(level: Optional[Union[int, str]] = None) -> logging.Logger:
+    if app_state.config is None:
+        raise RuntimeError(
+            "app_state.config is not initialized. Cannot setup logger without configuration."
+        )
+
     log_level: int
     if level is None:
         log_level = app_state.config.logging.level
