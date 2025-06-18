@@ -10,7 +10,7 @@ logger = logging.getLogger(__name__)
 class ShutdownManager:
     """Simplified ShutdownManager, primarily for potential future resource management."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         pass
 
     async def cleanup(self) -> None:
