@@ -272,14 +272,14 @@ async def unhandled_exception_handler(request: Request, exc: Exception) -> JSONR
 def setup_exception_handlers(app: FastAPI) -> None:
     """Configure exception handlers for the FastAPI application."""
     app.add_exception_handler(TrylonHTTPException, http_exception_handler)
-    app.add_exception_handler(json.JSONDecodeError, json_decode_error_handler)
+    app.add_exception_handler(json.JSONDecodeError, json_decode_error_handler)  # type: ignore[arg-type]
     app.add_exception_handler(
-        RequestValidationError, request_validation_exception_handler
+        RequestValidationError, request_validation_exception_handler  # type: ignore[arg-type]
     )
-    app.add_exception_handler(httpx.HTTPStatusError, httpx_http_status_error_handler)
+    app.add_exception_handler(httpx.HTTPStatusError, httpx_http_status_error_handler)  # type: ignore[arg-type]
     app.add_exception_handler(TrylonBaseError, trylon_exception_handler)
 
-    app.add_exception_handler(StarletteHTTPException, starlette_http_exception_handler)
+    app.add_exception_handler(StarletteHTTPException, starlette_http_exception_handler)  # type: ignore[arg-type]
 
     app.add_exception_handler(Exception, unhandled_exception_handler)
 
