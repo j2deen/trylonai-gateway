@@ -22,7 +22,7 @@ class ContentMessage:
     token_count: int = 0
     policy_violations: List[PolicyType] = field(default_factory=list)
 
-    def add_violation(self, policy_type: PolicyType):
+    def add_violation(self, policy_type: PolicyType) -> None:
         """Record a policy violation for this message."""
         if policy_type not in self.policy_violations:
             self.policy_violations.append(policy_type)

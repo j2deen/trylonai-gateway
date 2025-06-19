@@ -27,6 +27,9 @@ async def get_loaded_policies() -> List[Policy]:
     Reloads if the file has changed. Caches the result in memory.
     """
     global _loaded_policies, _policy_file_mtime
+    if app_state.config is None:
+        raise InitializationError("Policies", "App config is not initialized")
+    policies_path_str = app_state.config.policies_file_path
     policies_path_str = app_state.config.policies_file_path
     policies_path = Path(policies_path_str)
 
