@@ -91,6 +91,8 @@ async def init_transformer_models() -> None:
 
     logger.info("Initializing standard Transformer models (Toxicity/NER)...")
     try:
+        if not app_state.config:
+            raise InitializationError("app_state", "Missing config.")
         if app_state.config.toxicity_model_url:
             logger.info(
                 f"Initializing ClassificationModel from: {app_state.config.toxicity_model_url}"

@@ -7,6 +7,7 @@ from starlette.middleware.base import BaseHTTPMiddleware
 from starlette.responses import JSONResponse, Response
 
 from src.core import app_state
+from src.exceptions import InitializationError
 from src.shared import Action, SafetyCode
 
 logger = logging.getLogger(__name__)
@@ -32,6 +33,8 @@ class TimeoutMiddleware(BaseHTTPMiddleware):
             options: Additional configuration options
         """
         super().__init__(app)
+        if not app_state.config:
+            raise InitializationError("app_state", "Config is missing")
         self.default_timeout = app_state.config.middleware.timeout.default_timeout
         self.path_timeouts: Dict[str, int] = (
             app_state.config.middleware.timeout.path_timeouts
