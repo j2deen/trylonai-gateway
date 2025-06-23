@@ -68,7 +68,7 @@ class BaseTransformerModel(Generic[T]):
                 logger.debug(f"Starting blocking close for model '{model_name}'")
                 if hasattr(self, "model") and self.model is not None:
                     logger.debug(f"Moving model '{model_name}' to CPU.")
-                    self.model.cpu()
+                    self.model.cpu()  # type: ignore[attr-defined]
                     del self.model
                     self.model = None
                     logger.debug(f"Model '{model_name}' reference deleted.")
@@ -120,7 +120,7 @@ class BaseTransformerModel(Generic[T]):
             raise RuntimeError("Tokenizer not initialized.")
 
         logger.debug(f"Tokenizing input text on device '{self.device}'")
-        inputs: BatchEncoding = self.tokenizer(
+        inputs: BatchEncoding = self.tokenizer(  # type: ignore
             text,
             padding=True,
             truncation=True,
