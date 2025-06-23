@@ -15,10 +15,12 @@ from .base import BaseTransformerModel
 
 logger = logging.getLogger(__name__)
 
-ModelInitResult: TypeAlias = Tuple[torch.nn.Module, AutoTokenizer, Pipeline, bool]
+ModelInitResult: TypeAlias = Tuple[
+    AutoModelForTokenClassification, AutoTokenizer, Pipeline, bool
+]
 
 
-class NERModel(BaseTransformerModel[AutoModelForTokenClassification]):
+class NERModel(BaseTransformerModel[AutoModelForTokenClassification]):  # type: ignore
     """
     Entity recognition model wrapper.
     """
