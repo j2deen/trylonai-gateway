@@ -19,6 +19,8 @@ from .types import ContentMessage
 
 logger = logging.getLogger(__name__)
 
+assert app_state.config is not None, "app_state.config must be initialized"
+
 ENABLE_CHUNKING = app_state.config.validation.enable_chunking
 MAX_CHUNK_CHARS = app_state.config.validation.max_chunk_chars
 CHUNK_OVERLAP_CHARS = app_state.config.validation.chunk_overlap_chars
@@ -187,7 +189,7 @@ class ContentValidator:
                 try:
                     coro = None
                     if policy_type in self.ner_policy_types:
-                        coro = handler(text_to_check, policy, ner_results=ner_results)
+                        coro = handler(text_to_check, policy, ner_results=ner_results)  # type: ignore[operator]
                     elif policy_type == PolicyType.PII_LEAKAGE:
                         coro = self._run_check_pii(
                             temp_content_message, policy, message_was_chunked
@@ -196,7 +198,7 @@ class ContentValidator:
                         PolicyType.PROMPT_LEAKAGE,
                         PolicyType.PROFANITY,
                     ]:
-                        coro = handler(temp_content_message, policy)
+                        coro = handler(temp_content_message, policy)  # type: ignore[operator]
                     else:
                         logger.error(
                             f"Unhandled policy type {policy_type.name} in task creation.",
