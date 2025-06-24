@@ -8,11 +8,13 @@ from .logging_middleware import LoggingMiddleware
 from .request_id_middleware import RequestIDMiddleware
 from .security_middleware import SecurityMiddleware
 from .timeout_middleware import TimeoutMiddleware
-
+from src.exceptions import InitializationError
 logger = logging.getLogger(__name__)
 
 
 def register_middleware(app: FastAPI) -> FastAPI:
+    if not app_state.config:
+        raise InitializationError("app_state", "Config is missing.")
     middleware_config = app_state.config.middleware
     logger.info("Registering API middleware components (OS Core)")
 

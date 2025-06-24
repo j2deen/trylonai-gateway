@@ -34,7 +34,7 @@ class TimeoutMiddleware(BaseHTTPMiddleware):
         """
         super().__init__(app)
         if not app_state.config:
-            raise InitializationError("app_state", "Config is missing")
+            raise InitializationError("app_state", "Config is missing.")
         self.default_timeout = app_state.config.middleware.timeout.default_timeout
         self.path_timeouts: Dict[str, int] = (
             app_state.config.middleware.timeout.path_timeouts
