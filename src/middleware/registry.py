@@ -3,12 +3,13 @@ import logging
 from fastapi import FastAPI
 
 from src.core import app_state
+from src.exceptions import InitializationError
 
 from .logging_middleware import LoggingMiddleware
 from .request_id_middleware import RequestIDMiddleware
 from .security_middleware import SecurityMiddleware
 from .timeout_middleware import TimeoutMiddleware
-from src.exceptions import InitializationError
+
 logger = logging.getLogger(__name__)
 
 
