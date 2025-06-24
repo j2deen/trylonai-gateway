@@ -44,19 +44,18 @@ async def check_pii(
 
     try:
         entities_to_scan = _get_entities_to_scan(policy)
-        analyze_kwargs = {
-            "text": prompt,
-            "language": "en",
-            "entities": entities_to_scan,
-            "score_threshold": policy.pii_threshold,
-            "return_decision_process": False,
-        }
 
         def analyze_sync() -> PresidioResultList:
             logger.debug(
                 f"Running PII analysis (Policy: {policy.id}, Threshold: {policy.pii_threshold}, Entities: {entities_to_scan or 'Default'})"
             )
-            return analyzer_engine.analyze(**analyze_kwargs)
+            return analyzer_engine.analyze(
+                text=prompt,
+                entities=entities_to_scan,
+                language="en",
+                score_threshold=policy.pii_threshold,
+                return_decision_process=False,
+            )
 
         final_analyzer_results: PresidioResultList = await asyncio.to_thread(
             analyze_sync
