@@ -136,7 +136,7 @@ def _extract_output_message_from_claude(
 async def claude_messages_proxy(
     request: Request,
     loaded_policies: List[Policy] = Depends(get_loaded_policies),
-):
+) -> Response:
     start_time = time.time()
     request_id = getattr(
         request.state,
@@ -237,6 +237,9 @@ async def claude_messages_proxy(
 
         logger.debug("Forwarding request to Claude.", extra=log_extra)
 
+        if app_state.config is None:
+            raise RuntimeError("App config is not initialized")
+
         claude_url = f"{app_state.config.claude_api_base_url}/v1/messages"
         headers = {
             proxy_utils.HEADER_ANTHROPIC_API_KEY: claude_api_key,
@@ -253,7 +256,7 @@ async def claude_messages_proxy(
             )
             backend_response.raise_for_status()
             claude_response_data = backend_response.json()
-            model_used = claude_response_data.get("model", "unknown")
+            model_used = claude_response_data.get("model", "unknown")  # type: ignore[union-attr]
             log_extra["model_used"] = model_used
             logger.debug(
                 f"Received OK response from Claude (Model: {model_used}).",

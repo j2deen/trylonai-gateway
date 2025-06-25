@@ -50,7 +50,7 @@ def _merge_log_extra(base: Dict[str, Any], status_obj: Status) -> Dict[str, Any]
 async def openai_chat_completions_proxy(
     request: Request,
     loaded_policies: List[Policy] = Depends(get_loaded_policies),
-):
+) -> Response:
     start_time = time.time()
     request_id = getattr(
         request.state,
@@ -135,6 +135,9 @@ async def openai_chat_completions_proxy(
             )
 
         logger.debug("Forwarding request to OpenAI", extra=log_extra)
+
+        if app_state.config is None:
+            raise RuntimeError("App config is not initialized")
 
         openai_url = f"{app_state.config.openai_api_base_url}/chat/completions"
         headers = {

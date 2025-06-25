@@ -82,6 +82,8 @@ def create_application() -> FastAPI:
 
     setup_exception_handlers(app)
 
+    if not app_state.config:
+        raise RuntimeError("App state is not initialized.")
     cors_origins = list(app_state.config.allowed_origins)
     if not cors_origins or cors_origins == ["*"]:
         logger.warning("CORS configured to allow all origins ('*').")

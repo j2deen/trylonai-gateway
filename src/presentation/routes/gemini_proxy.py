@@ -123,7 +123,7 @@ async def gemini_generate_content_proxy(
     request: Request,
     model_name: str,
     loaded_policies: List[Policy] = Depends(get_loaded_policies),
-):
+) -> Response:
     start_time = time.time()
     request_id = getattr(
         request.state,
@@ -207,6 +207,8 @@ async def gemini_generate_content_proxy(
             )
 
         logger.debug("Forwarding request to Gemini.", extra=log_extra)
+        if app_state.config is None:
+            raise RuntimeError("App config is not initialized")
         gemini_url = f"{app_state.config.gemini_api_base_url}/{app_state.config.gemini_api_version}/models/{model_name}:generateContent"
         params = {"key": gemini_api_key}
         headers = {"Content-Type": "application/json"}
